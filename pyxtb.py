@@ -1,8 +1,8 @@
-"""xtb2sheet - XTB export (zip of xlsx files) -> rows to paste into the "Transakcje" tab of the Google Sheet.
+"""pyxtb - XTB export (zip of xlsx files) -> rows to paste into the "Transakcje" tab of the Google Sheet.
 
 Layout: core/ (shared: export reader, tickers, NBP rates, transactions), sheet/ (TSV, report, checks),
 cache/ (NBP and ticker caches), out/ (results), config/ (optional tickers.csv), ut/ (tests), docs/.
-Console output is a short summary; all diagnostics go to the report file (docs/SPEC_xtb2sheet.md §12).
+Console output is a short summary; all diagnostics go to the report file (docs/SPEC_pyxtb.md §12).
 """
 from __future__ import annotations
 

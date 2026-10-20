@@ -5,7 +5,7 @@ from decimal import Decimal as D
 import openpyxl
 import pytest
 
-import xtb2sheet
+import pyxtb
 from core.reader import AccountData, Operation
 from core.tickers import TickerDict
 from core.transactions import build_rows
@@ -91,7 +91,7 @@ def test_fifo_flags_sale_without_purchase():
 
 def test_from_rejects_per_account_syntax():
     with pytest.raises(SystemExit):
-        xtb2sheet.main(["x.zip", "--from", "USD=2026-01-01"])
+        pyxtb.main(["x.zip", "--from", "USD=2026-01-01"])
 
 
 def test_end_to_end_concise_console(tmp_path, monkeypatch, capsys):
@@ -109,9 +109,9 @@ def test_end_to_end_concise_console(tmp_path, monkeypatch, capsys):
     with zipfile.ZipFile(tmp_path / "export.zip", "w") as z:
         z.write(tmp_path / "USD_1_2026.xlsx", "USD_1_2026.xlsx")
     (tmp_path / "t.csv").write_text("xtb_symbol,ticker,name,asset_class,instrument_currency\nV.US,NYSE:V,Visa,Akcje zagraniczne,USD\n", encoding="utf-8")
-    monkeypatch.setattr(xtb2sheet, "NbpRates", lambda *_a, **_k: FixedRates())
+    monkeypatch.setattr(pyxtb, "NbpRates", lambda *_a, **_k: FixedRates())
 
-    code = xtb2sheet.main([str(tmp_path / "export.zip"), "--from", "2026-01-01", "--tickers", str(tmp_path / "t.csv"),
+    code = pyxtb.main([str(tmp_path / "export.zip"), "--from", "2026-01-01", "--tickers", str(tmp_path / "t.csv"),
                            "--out", str(tmp_path / "o.tsv"), "--report", str(tmp_path / "r.md")])
     out = capsys.readouterr().out
     assert code == 0
@@ -139,15 +139,15 @@ def _zip_with_deposits(tmp_path):
 
 
 def test_default_is_whole_history_and_says_so(tmp_path, monkeypatch, capsys):
-    monkeypatch.setattr(xtb2sheet, "HERE", tmp_path)
+    monkeypatch.setattr(pyxtb, "HERE", tmp_path)
     args = [_zip_with_deposits(tmp_path), "--out", str(tmp_path / "o.tsv"), "--report", str(tmp_path / "r.md")]
-    assert xtb2sheet.main(args) == 0
+    assert pyxtb.main(args) == 0
     out = capsys.readouterr().out
     assert "Zakres: cała historia eksportu (tylko nowsze wiersze: --from RRRR-MM-DD)" in out
     assert len((tmp_path / "o.tsv").read_text(encoding="utf-8").splitlines()) == 2
     assert "sprawdzono wygenerowane wiersze" in (tmp_path / "r.md").read_text(encoding="utf-8")
 
-    assert xtb2sheet.main(args + ["--from", "2026-01-01"]) == 0
+    assert pyxtb.main(args + ["--from", "2026-01-01"]) == 0
     assert "Zakres: od 2026-01-01 włącznie" in capsys.readouterr().out
     assert len((tmp_path / "o.tsv").read_text(encoding="utf-8").splitlines()) == 1
     assert "--from bez --portfolio" in (tmp_path / "r.md").read_text(encoding="utf-8")

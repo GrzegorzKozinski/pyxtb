@@ -1,4 +1,4 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))     # project root: xtb2sheet, core, sheet
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))     # project root: pyxtb, core, sheet

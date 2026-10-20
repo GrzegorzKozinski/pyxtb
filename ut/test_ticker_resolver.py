@@ -5,7 +5,7 @@ from decimal import Decimal as D
 
 import openpyxl
 
-import xtb2sheet
+import pyxtb
 from core.reader import AccountData, Operation
 from core.ticker_resolver import ChartData, TickerResolver, resolve_missing, verify_prices
 from core.tickers import TickerDict
@@ -168,11 +168,11 @@ def test_end_to_end_without_any_dictionary_file(tmp_path, monkeypatch, capsys):
 
         def get(self, ccy, on):
             return D("4.0000")
-    monkeypatch.setattr(xtb2sheet, "HERE", tmp_path)                     # no tickers.csv, own cache
-    monkeypatch.setattr(xtb2sheet, "NbpRates", lambda *_a, **_k: Rates())
-    monkeypatch.setattr(xtb2sheet, "YahooClient", lambda: FakeClient({"TTWO": chart("TTWO")}))
+    monkeypatch.setattr(pyxtb, "HERE", tmp_path)                     # no tickers.csv, own cache
+    monkeypatch.setattr(pyxtb, "NbpRates", lambda *_a, **_k: Rates())
+    monkeypatch.setattr(pyxtb, "YahooClient", lambda: FakeClient({"TTWO": chart("TTWO")}))
 
-    code = xtb2sheet.main([str(tmp_path / "export.zip"), "--from", "2026-01-01",
+    code = pyxtb.main([str(tmp_path / "export.zip"), "--from", "2026-01-01",
                            "--out", str(tmp_path / "o.tsv"), "--report", str(tmp_path / "r.md")])
     out = capsys.readouterr().out
     assert code == 0 and len(out.strip().splitlines()) <= 5

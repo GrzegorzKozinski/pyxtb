@@ -1,12 +1,12 @@
-# xtb2sheet
+# pyxtb
 
 XTB export (zip of `PLN_/EUR_/USD_/IKE_*.xlsx`) -> TSV rows to paste into the `Transakcje` tab of the Google Sheet, plus a report.
-A local dashboard is planned and will reuse `core/`. Spec: `docs/SPEC_xtb2sheet.md`.
+A local dashboard is planned and will reuse `core/`. Spec: `docs/SPEC_pyxtb.md`.
 Install: `pip install -r requirements.txt`. Tests: `python -m pytest -q` (from this folder).
 
 ## Layout
 ```
-xtb2sheet.py        CLI of the sheet export (entry point)
+pyxtb.py        CLI of the sheet export (entry point)
 README.md, requirements.txt
 core/               shared by the sheet export and the future dashboard
   reader.py           zip/xlsx -> operations per sub-account, trade-comment parser
@@ -29,11 +29,11 @@ dashboard/          (to be added) local dashboard on top of core/
 
 ## Usage
 ```
-python xtb2sheet.py                          # ../export.zip, whole history -> out/result.tsv, out/report.md
-python xtb2sheet.py other.zip --report r.md
-python xtb2sheet.py --from 2026-08-01        # only rows from this day (inclusive), the same for ALL accounts
-python xtb2sheet.py --from 2026-08-01 --portfolio ../portfolio-transakcje.csv   # + FIFO check against earlier positions
-python xtb2sheet.py --audit --portfolio ../portfolio-transakcje.csv             # whole history vs sheet -> out/audit.md
+python pyxtb.py                          # ../export.zip, whole history -> out/result.tsv, out/report.md
+python pyxtb.py other.zip --report r.md
+python pyxtb.py --from 2026-08-01        # only rows from this day (inclusive), the same for ALL accounts
+python pyxtb.py --from 2026-08-01 --portfolio ../portfolio-transakcje.csv   # + FIFO check against earlier positions
+python pyxtb.py --audit --portfolio ../portfolio-transakcje.csv             # whole history vs sheet -> out/audit.md
 ```
 Options: `zip` · `--from YYYY-MM-DD` · `--portfolio FILE` · `--tickers FILE` · `--offline` · `--out FILE` · `--report FILE` · `--comment tag|info|both` · `--audit`
 

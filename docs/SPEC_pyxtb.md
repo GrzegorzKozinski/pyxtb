@@ -1,4 +1,4 @@
-# Specyfikacja: `xtb2sheet` – eksport XTB → wiersze do zakładki „Transakcje”
+# Specyfikacja: `pyxtb` – eksport XTB → wiersze do zakładki „Transakcje”
 
 Status: **gotowa do implementacji** (stan na 2026-10-04). Nic nie zostało jeszcze zaimplementowane.
 Dane referencyjne: eksporty XTB z zakresu 2006-01-01 … 2026-09-19 oraz arkusz `portfolio-transakcje.csv` (372 wiersze).
@@ -20,7 +20,7 @@ Skrypt CLI (Python, Windows) przyjmuje **zip z eksportami XTB** i zwraca **TSV g
 - Testy: `pytest`.
 
 ```
-python xtb2sheet.py eksport.zip --portfolio portfolio-transakcje.csv
+python pyxtb.py eksport.zip --portfolio portfolio-transakcje.csv
         [--od KONTO=RRRR-MM-DD ...]   # nadpisanie daty granicznej (włącznie)
         [--slownik tickers.csv]       # domyślnie obok skryptu
         [--out wynik.tsv] [--raport raport.md]
